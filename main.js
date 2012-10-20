@@ -110,23 +110,23 @@ Banana = Class.create(Sprite, {
 
       if (randomDiscrete(0, 1) == 0.0) {
          this.velX = random(1.0, 5.0);
-         this.y = random(-0, 300);
+         this.y = random(-0, game.width - 20);
          if (randomDiscrete(0, 1) == 0.0) {
             this.x = -60;
          }
          else {
-            this.x = 380;
+            this.x = game.width + 60;
             this.velX *= -1.0;
          }
       }
       else {
-         this.x = random(-0, 300);
+         this.x = random(-0, game.width - 20);
          this.velY = random(1.0, 5.0);
          if (randomDiscrete(0, 1) == 0.0) {
             this.y = -40;
          }
          else {
-            this.y = 360;
+            this.y = game.width + 40;
             this.velY *= -1.0;
          }
       }
@@ -136,7 +136,7 @@ Banana = Class.create(Sprite, {
       this.y += this.velY;
 
       if (this.velX > 0.0) {
-         if (this.x > 300) {
+         if (this.x > game.width - 20) {
          }
       }
       else if (this.velX < 0.0) {
@@ -156,7 +156,7 @@ Banana = Class.create(Sprite, {
          }
       }
       else if (this.velY > 0.0) {
-         if (this.y > 360) {
+         if (this.y > game.width + 40) {
             var banana = new Banana()
             bananas.push(banana);
             game.rootScene.addChild(banana);
@@ -181,23 +181,23 @@ PoisonMushroom = Class.create(Sprite, {
 
       if (randomDiscrete(0, 1) == 0.0) {
          this.velX = random(1.0, 5.0);
-         this.y = random(-0, 300);
+         this.y = random(-0, game.width - 20);
          if (randomDiscrete(0, 1) == 0.0) {
             this.x = -60;
          }
          else {
-            this.x = 380;
+            this.x = game.width + 60;
             this.velX *= -1.0;
          }
       }
       else {
-         this.x = random(-0, 300);
+         this.x = random(-0, game.width - 20);
          this.velY = random(1.0, 5.0);
          if (randomDiscrete(0, 1) == 0.0) {
             this.y = -40;
          }
          else {
-            this.y = 360;
+            this.y = game.width + 40;
             this.velY *= -1.0;
          }
       }
@@ -207,7 +207,7 @@ PoisonMushroom = Class.create(Sprite, {
       this.y += this.velY;
 
       if (this.velX > 0.0) {
-         if (this.x > 300) {
+         if (this.x > game.width - 20) {
          }
       }
       else if (this.velX < 0.0) {
@@ -227,7 +227,7 @@ PoisonMushroom = Class.create(Sprite, {
          }
       }
       else if (this.velY > 0.0) {
-         if (this.y > 360) {
+         if (this.y > game.width + 40) {
             var mushroom = new PoisonMushroom()
             mushrooms.push(mushroom);
             game.rootScene.addChild(mushroom);
