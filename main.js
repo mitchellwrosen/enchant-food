@@ -12,32 +12,6 @@ function random(from, to) {
 }
 
 Bear = Class.create(Sprite, {
-   initialize: function(x, y, frameOffset) {
-      Sprite.call(this, 32, 32);
-      this.image = game.assets['chara1.png'];
-      this.x = x;
-      this.y = y;
-      this.tx = x;
-      this.ty = y;
-      this.frame = frameOffset;
-      this.frameOffset = frameOffset;
-
-      // Movement variables.
-      this.speed = 10;
-      this.isMoving = false;
-      this.vx = 0;
-      this.vy = 0;
-   },
-   onenterframe: function() {
-      if (this.x < this.tx)
-         this.x += this.speed > this.tx - this.x ? this.tx - this.x : this.speed;
-      else if (this.x > this.tx)
-         this.x -= this.speed > this.x - this.tx ? this.x - this.tx : this.speed;
-      if (this.y < this.ty)
-         this.y += this.speed > this.ty - this.y ? this.ty - this.y : this.speed;
-      else if (this.y > this.ty)
-         this.y -= this.speed > this.y - this.ty ? this.y - this.ty : this.speed;
-   },
    setSpeed: function(speed) {
       this.speed = speed;
    },
@@ -49,6 +23,71 @@ Bear = Class.create(Sprite, {
    },
    setTy: function(ty) {
       this.ty = ty - 16;
+   },
+});
+
+GoodBear = Class.create(Bear, {
+   initialize: function(x, y) {
+      Sprite.call(this, 32, 32);
+      this.image = game.assets['chara1.png'];
+      this.x = x;
+      this.y = y;
+      this.tx = x;
+      this.ty = y;
+      this.frame = 0;
+      this.frameOffset = 0;
+      this.speed = 10;
+   },
+   onenterframe: function() {
+      // Move.
+      if (this.x < this.tx)
+         this.x += this.speed > this.tx - this.x ? this.tx - this.x : this.speed;
+      else if (this.x > this.tx)
+         this.x -= this.speed > this.x - this.tx ? this.x - this.tx : this.speed;
+      if (this.y < this.ty)
+         this.y += this.speed > this.ty - this.y ? this.ty - this.y : this.speed;
+      else if (this.y > this.ty)
+         this.y -= this.speed > this.y - this.ty ? this.y - this.ty : this.speed;
+      this.frame = this.age%2;
+
+      // Check for banana collision.
+      for (var i = 0; i < bananas.length; i++) {
+         if (this.intersect(bananas[i]))
+            game.rootScene.removeChild(bananas[i]);
+      }
+   },
+});
+
+BadBear = Class.create(Bear, {
+   initialize: function(x, y, goodBear) {
+      Sprite.call(this, 32, 32);
+      this.image = game.assets['chara1.png'];
+      this.x = x;
+      this.y = y;
+      this.tx = x;
+      this.ty = y;
+      this.frame = 5;
+      this.frameOffset = 5;
+      this.speed = 1;
+      this.goodBear = goodBear;
+   },
+   onenterframe: function() {
+      // Move.
+      if (this.x < this.goodBear.x)
+         this.x += this.speed > this.goodBear.x - this.x ? this.goodBear.x - this.x : this.speed;
+      else if (this.x > this.goodBear.x)
+         this.x -= this.speed > this.x - this.goodBear.x ? this.x - this.goodBear.x : this.speed;
+      if (this.y < this.goodBear.y)
+         this.y += this.speed > this.goodBear.y - this.y ? this.goodBear.y - this.y : this.speed;
+      else if (this.y > this.goodBear.y)
+         this.y -= this.speed > this.y - this.goodBear.y ? this.y - this.goodBear.y : this.speed;
+      this.frame = this.age%2 + this.frameOffset;
+
+      // Check for banana collision.
+      for (var i = 0; i < bananas.length; i++) {
+         if (this.intersect(bananas[i]))
+            game.rootScene.removeChild(bananas[i]);
+      }
    },
 });
 
@@ -195,18 +234,17 @@ PoisonMushroom = Class.create(Sprite, {
 });
 
 window.onload = function() {
-   game = new Game(320, 320);
+   game = new Game(2*640, 2*640);
    game.fps = 15;
    game.preload("chara1.png");
    game.preload("Poison_mushroom.gif");
    game.preload("banana.png");
    game.onload = function(){
       bear = new Sprite(32, 32);
-      bear = new Bear(0, 0, 0);
+      bear = new GoodBear(0, 0);
       game.rootScene.addChild(bear);
 
-      bear2 = new Bear(16, 16, 5);
-      bear2.setSpeed(16);
+      bear2 = new BadBear(160, 160, bear);
       game.rootScene.addChild(bear2);
       for (var i = 0; i < 8; i++) {
          var banana = new Banana();
