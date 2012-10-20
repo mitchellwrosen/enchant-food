@@ -51,23 +51,6 @@ Bear = Class.create(Sprite, {
    },
 });
 
-<<<<<<< HEAD
-window.onload = function() {
-   game = new Game(320, 320);
-   game.fps = 15;
-   game.preload("chara1.png");
-   game.onload = function() {
-      bear = new Bear(0, 0, 0);
-      game.rootScene.addChild(bear);
-
-      bear2 = new Bear(16, 16, 5);
-      bear2.setSpeed(16);
-      game.rootScene.addChild(bear2);
-      game.rootScene.addEventListener('touchend', function(e) {
-         bear.setTx(e.x);
-         bear.setTy(e.y);
-      });
-=======
 PoisonMushroom = Class.create(Sprite, {
    initialize: function() {
       Sprite.call(this, 100, 100);
@@ -143,34 +126,30 @@ PoisonMushroom = Class.create(Sprite, {
    }
 });
 
-window.onload = function(){
+window.onload = function() {
    game = new Game(320, 320);
    game.fps = 15;
    game.preload("chara1.png");
    game.preload("Poison_mushroom.gif");
-   game.onload = function(){
+   game.onload = function() {
       bear = new Sprite(32, 32);
-      bear.image = game.assets["chara1.png"];
-      bear.x = 0;
-      bear.y = 0;
-      bear.frame = 5;
+      bear = new Bear(0, 0, 0);
       game.rootScene.addChild(bear);
-      bear.addEventListener("enterframe", function(){
-         this.x += 1;
-         this.frame = this.age % 2 + 6;
-      });
 
-      bear.addEventListener("touchstart", function(){
-         game.rootScene.removeChild(bear);
-      });
-
-
+      bear2 = new Bear(16, 16, 5);
+      bear2.setSpeed(16);
+      game.rootScene.addChild(bear2);
       for (var i = 0; i < 8; i++) {
          var mushroom = new PoisonMushroom();
          game.rootScene.addChild(mushroom);
          mushrooms.push(mushroom);
       }
-   };
 
+      game.rootScene.addEventListener('touchmove', function(e) {
+         bear.setTx(e.x);
+         bear.setTy(e.y);
+      });
+
+   };
    game.start();
-};
+}
