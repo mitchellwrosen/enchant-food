@@ -51,9 +51,9 @@ GoodBear = Class.create(Bear, {
       this.frame = this.age%2;
 
       // Check for banana collision.
-      for (var i = 0; i < bananas.length; i++) {
-         if (this.intersect(bananas[i]))
-            game.rootScene.removeChild(bananas[i]);
+      for (banana in bananas) {
+         if (this.intersect(banana))
+            game.rootScene.removeChild(banana);
       }
    },
 });
@@ -86,12 +86,6 @@ BadBear = Class.create(Bear, {
          this.frame = this.frameOffset + 2;
       else
          this.frame = this.age%2 + this.frameOffset;
-
-      // Check for banana collision.
-      for (var i = 0; i < bananas.length; i++) {
-         if (this.intersect(bananas[i]))
-            game.rootScene.removeChild(bananas[i]);
-      }
    },
 });
 
@@ -137,6 +131,10 @@ Banana = Class.create(Sprite, {
 
       if (this.velX > 0.0) {
          if (this.x > game.width - 20) {
+            var banana = new Banana()
+            bananas.push(banana);
+            game.rootScene.addChild(banana);
+            game.rootScene.removeChild(this);
          }
       }
       else if (this.velX < 0.0) {
@@ -208,6 +206,10 @@ PoisonMushroom = Class.create(Sprite, {
 
       if (this.velX > 0.0) {
          if (this.x > game.width - 20) {
+            var mushroom = new PoisonMushroom()
+            mushrooms.push(mushroom);
+            game.rootScene.addChild(mushroom);
+            game.rootScene.removeChild(this);
          }
       }
       else if (this.velX < 0.0) {
