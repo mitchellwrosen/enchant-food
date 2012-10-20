@@ -1,6 +1,7 @@
 enchant();
 
 mushrooms = []
+bananas = []
 
 function randomDiscrete(from, to) {
    return Math.floor(Math.random()*(to-from+1)+from);
@@ -17,16 +18,16 @@ Bear = Class.create(Sprite, {
    }
 });
 
-PoisonMushroom = Class.create(Sprite, {
+Banana = Class.create(Sprite, {
    initialize: function() {
-      Sprite.call(this, 100, 100);
-      this.image = game.assets['Poison_mushroom.gif'];
-      this.scaleX = .2;
-      this.scaleY = .2;
+      Sprite.call(this, 32, 30);
+      this.image = game.assets['banana.png'];
+      this.scaleX = .5;
+      this.scaleY = .5;
 
-      var scale = random(.4, 1.0);
-      this.scaleX *= scale;
-      this.scaleY *= scale;
+      this.scale = random(.4, 1.0);
+      this.scaleX *= this.scale;
+      this.scaleY *= this.scale;
       this.x = -60;
       this.y = -40;
 
@@ -59,10 +60,77 @@ PoisonMushroom = Class.create(Sprite, {
 
       if (this.velX > 0.0) {
          if (this.x > 300) {
-            var mushroom = new PoisonMushroom()
-            mushrooms.push(mushroom);
-            game.rootScene.addChild(mushroom);
+         }
+      }
+      else if (this.velX < 0.0) {
+         if (this.x < -60) {
+            var banana = new Banana()
+            bananas.push(banana);
+            game.rootScene.addChild(banana);
             game.rootScene.removeChild(this);
+         }
+      }
+      else if (this.velY < 0.0) {
+         if (this.y < -40) {
+            var banana = new Banana()
+            bananas.push(banana);
+            game.rootScene.addChild(banana);
+            game.rootScene.removeChild(this);
+         }
+      }
+      else if (this.velY > 0.0) {
+         if (this.y > 360) {
+            var banana = new Banana()
+            bananas.push(banana);
+            game.rootScene.addChild(banana);
+            game.rootScene.removeChild(this);
+         }
+      }
+   }
+});
+
+PoisonMushroom = Class.create(Sprite, {
+   initialize: function() {
+      Sprite.call(this, 100, 100);
+      this.image = game.assets['Poison_mushroom.gif'];
+      this.scaleX = .2;
+      this.scaleY = .2;
+
+      this.scale = random(.4, 1.0);
+      this.scaleX *= this.scale;
+      this.scaleY *= this.scale;
+      this.x = -60;
+      this.y = -40;
+
+      if (randomDiscrete(0, 1) == 0.0) {
+         this.velX = random(1.0, 5.0);
+         this.y = random(-0, 300);
+         if (randomDiscrete(0, 1) == 0.0) {
+            this.x = -60;
+         }
+         else {
+            this.x = 380;
+            this.velX *= -1.0;
+         }
+      }
+      else {
+         this.x = random(-0, 300);
+         this.velY = random(1.0, 5.0);
+         if (randomDiscrete(0, 1) == 0.0) {
+            this.y = -40;
+         }
+         else {
+            this.y = 360;
+            this.velY *= -1.0;
+         }
+      }
+   },
+   onenterframe: function() {
+      this.x += this.velX;
+      this.y += this.velY;
+
+      if (this.velX > 0.0) {
+         if (this.x > 300) {
          }
       }
       else if (this.velX < 0.0) {
@@ -97,6 +165,7 @@ window.onload = function(){
    game.fps = 15;
    game.preload("chara1.png");
    game.preload("Poison_mushroom.gif");
+   game.preload("banana.png");
    game.onload = function(){
       bear = new Sprite(32, 32);
       bear.image = game.assets["chara1.png"];
@@ -114,6 +183,11 @@ window.onload = function(){
       });
 
 
+      for (var i = 0; i < 8; i++) {
+         var banana = new Banana();
+         game.rootScene.addChild(banana);
+         bananas.push(banana);
+      }
       for (var i = 0; i < 8; i++) {
          var mushroom = new PoisonMushroom();
          game.rootScene.addChild(mushroom);
