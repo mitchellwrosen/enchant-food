@@ -1,7 +1,10 @@
 enchant();
 
 Bear = Class.create(Sprite, {
-   initialize: {}
+   initialize: function() {
+      Sprite.call(this, 32, 32);
+      this.image = game.assets['chara1.png'];
+   }
 });
 
 window.onload = function(){
