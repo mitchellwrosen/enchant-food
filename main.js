@@ -81,7 +81,11 @@ BadBear = Class.create(Bear, {
          this.y += this.speed > this.goodBear.y - this.y ? this.goodBear.y - this.y : this.speed;
       else if (this.y > this.goodBear.y)
          this.y -= this.speed > this.y - this.goodBear.y ? this.y - this.goodBear.y : this.speed;
-      this.frame = this.age%2 + this.frameOffset;
+
+      if (Math.abs(this.x - this.goodBear.x) < 40)
+         this.frame = this.frameOffset + 2;
+      else
+         this.frame = this.age%2 + this.frameOffset;
 
       // Check for banana collision.
       for (var i = 0; i < bananas.length; i++) {
@@ -234,14 +238,14 @@ PoisonMushroom = Class.create(Sprite, {
 });
 
 window.onload = function() {
-   game = new Game(2*640, 2*640);
+   game = new Game(640, 640);
    game.fps = 15;
    game.preload("chara1.png");
    game.preload("Poison_mushroom.gif");
    game.preload("banana.png");
    game.onload = function(){
       bear = new Sprite(32, 32);
-      bear = new GoodBear(0, 0);
+      bear = new GoodBear(game.width/2, game.height/2);
       game.rootScene.addChild(bear);
 
       bear2 = new BadBear(160, 160, bear);
